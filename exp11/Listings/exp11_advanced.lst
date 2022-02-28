@@ -1,0 +1,85 @@
+C51 COMPILER V9.60.0.0   EXP11_ADVANCED                                                    12/08/2020 17:23:49 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EXP11_ADVANCED
+OBJECT MODULE PLACED IN .\Objects\exp11_advanced.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE exp11_advanced.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Lis
+                    -tings\exp11_advanced.lst) TABS(2) OBJECT(.\Objects\exp11_advanced.obj)
+
+line level    source
+
+   1          #include "regx51.h"
+   2          void delay(int t);
+   3          void turn();
+   4          
+   5          code char one_phase[] = {0x01, 0x04, 0x02, 0x08};
+   6          code char two_phase[] = {0x0C, 0x06, 0x03, 0x09};
+   7          code char one_a_half_phase[] = {0x0C, 0x01, 0x06, 0x04, 0x03, 0x02, 0x09, 0x08};
+   8          int dir, delay_time;
+   9          int delay_time_slow = 6000;
+  10          int delay_time_fast = 3000;
+  11          int debounce_time = 15000;
+  12          
+  13          void main(){
+  14   1        IT0 = 0;
+  15   1        IT1 = 0;
+  16   1        IE = 0x85;                  //enable INT0 and INT1
+  17   1        delay_time = delay_time_fast;
+  18   1        dir = 1;
+  19   1        while(1){
+  20   2          turn();
+  21   2        }
+  22   1      }
+  23          
+  24          void turn(){
+  25   1        int x;
+  26   1        if(dir == 1){
+  27   2          for(x=0; x<8; x++){
+  28   3            P1 = one_a_half_phase[x];
+  29   3            delay(delay_time);
+  30   3          }
+  31   2        }
+  32   1        else{
+  33   2          for(x=7; x>=0; x--){
+  34   3            P1 = one_a_half_phase[x];
+  35   3            delay(delay_time);
+  36   3          }
+  37   2        }
+  38   1      }
+  39          
+  40          void delay(int t){
+  41   1        int x;
+  42   1        for(x=0; x<t; x++);
+  43   1      }
+  44          
+  45          void int_0(void) interrupt 0{       //change rotate velocity
+  46   1        if(delay_time == delay_time_fast)
+  47   1          delay_time = delay_time_slow;
+  48   1        else
+  49   1          delay_time = delay_time_fast;
+  50   1        delay(debounce_time);
+  51   1      }
+  52          
+  53          void int_1(void) interrupt 2{       //change rotate direction
+  54   1        if(dir == 1)
+C51 COMPILER V9.60.0.0   EXP11_ADVANCED                                                    12/08/2020 17:23:49 PAGE 2   
+
+  55   1          dir = 0;
+  56   1        else
+  57   1          dir = 1;
+  58   1        delay(debounce_time);
+  59   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    252    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     10       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

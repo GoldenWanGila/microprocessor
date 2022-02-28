@@ -1,0 +1,57 @@
+C51 COMPILER V9.60.0.0   EXP10                                                             12/20/2020 13:11:27 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EXP10
+OBJECT MODULE PLACED IN .\Objects\exp10.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE exp10.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\exp
+                    -10.lst) TABS(2) OBJECT(.\Objects\exp10.obj)
+
+line level    source
+
+   1          #include "regx51.h"
+   2          
+   3          void print_msg(char* msg);
+   4          void write(char cmd, char rs_value);
+   5          void delay(unsigned int t);
+   6          
+   7          void main(){
+   8   1        write(0x38, 0);
+   9   1        write(0x0F, 0);
+  10   1        write(0x06, 0);
+  11   1        write(0x01, 0);
+  12   1        write(0x80, 0);
+  13   1        print_msg("Hello, World!");
+  14   1        while(1);
+  15   1      }
+  16          
+  17          void print_msg(char* msg){
+  18   1        for(;*msg != '\0'; ++msg)
+  19   1          write(*msg, 1);
+  20   1      }
+  21          
+  22          void write(char cmd, char rs_value){
+  23   1        P1 = cmd;
+  24   1        P3_0 = rs_value;
+  25   1        P3_1 = 1;
+  26   1        delay(100);
+  27   1        P3_1 = 0;
+  28   1        delay(100);
+  29   1      }
+  30          
+  31          void delay(unsigned int t){
+  32   1        while(t--);
+  33   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    119    ----
+   CONSTANT SIZE    =     14    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

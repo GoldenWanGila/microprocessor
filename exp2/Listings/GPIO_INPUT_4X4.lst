@@ -1,0 +1,79 @@
+A51 MACRO ASSEMBLER  GPIO_INPUT_4X4                                                       09/16/2020 20:46:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\GPIO_INPUT_4X4.obj
+ASSEMBLER INVOKED BY: D:\Keil_v5\C51\BIN\A51.EXE GPIO_INPUT_4X4.A51 SET(SMALL) DEBUG PRINT(.\Listings\GPIO_INPUT_4X4.lst
+                      ) OBJECT(.\Objects\GPIO_INPUT_4X4.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                             ORG 0                           ;start from 0000H
+0000 900033            2                             MOV DPTR, #TABLE        ;DPTR point to TABLE
+0003 7800              3     START:          MOV R0, #0                      ;initialize typed signal
+0005 7904              4                             MOV R1, #4                      ;set 4 rows
+0007 7AF7              5                             MOV R2, #11110111B      ;set first row
+0009 EA                6     SCAN:           MOV A, R2                       ;move R2 to A
+000A F5A0              7                             MOV P2, A                       ;move A to P2->input scanned signal
+000C 30A713            8                             JNB P2.7, KEYIN         ;scan column 1
+000F 08                9                             INC R0                          ;add #01 into R0
+0010 30A60F           10                             JNB P2.6, KEYIN         ;scan column 2
+0013 08               11                             INC R0                          ;add #01 into R0
+0014 30A50B           12                             JNB P2.5, KEYIN         ;scan column 3
+0017 08               13                             INC R0                          ;add #01 into R0
+0018 30A407           14                             JNB P2.4, KEYIN         ;scan column 4
+001B 08               15                             INC R0                          ;add #01 into R0
+001C 03               16                             RR A                            ;right rotate A->next row
+001D FA               17                             MOV R2, A                       ;move A to R2
+001E D9E9             18                             DJNZ R1, SCAN           ;scan 4 rows
+0020 80E1             19                             SJMP START                      ;jump to scan jeypad again
+0022 112A             20     KEYIN:          CALL DEBOUNCE           ;call DEBOUNCE function
+0024 E8               21                             MOV A, R0                       ;move R0 to A->get typed signal
+0025 93               22                             MOVC A, @A+DPTR         ;according A, get signal from TABLE
+0026 F590             23                             MOV P1, A                       ;move A to P1->output displayed sig
+                             nal
+0028 80D9             24                             SJMP START                      ;jump to scan keypad again
+002A 7C64             25     DEBOUNCE:       MOV R4, #100            ;move 50 times into R4
+002C 7BFA             26     DE_500_us:      MOV R3, #250            ;move 250times into R3
+002E DBFE             27                             DJNZ R3, $                      ;jump to itself R3 times
+0030 DCFA             28                             DJNZ R4, DE_500_us      ;delay 25ms
+0032 22               29                             RET                                     ;return to main code
+0033 F9               30     TABLE:          DB 11111001B            ;display "1"
+0034 A4               31                             DB 10100100B            ;display "2"
+0035 B0               32                             DB 10110000B            ;display "3"
+0036 46               33                             DB 01000110B            ;display "C"
+0037 99               34                             DB 10011001B            ;display "4"
+0038 92               35                             DB 10010010B            ;display "5"
+0039 82               36                             DB 10000010B            ;display "6"
+003A 40               37                             DB 01000000B            ;display "D"
+003B D8               38                             DB 11011000B            ;display "7"
+003C 80               39                             DB 10000000B            ;display "8"
+003D 90               40                             DB 10010000B            ;display "9"
+003E 06               41                             DB 00000110B            ;display "E"
+003F 08               42                             DB 00001000B            ;display "A"
+0040 C0               43                             DB 11000000B            ;display "0"
+0041 00               44                             DB 00000000B            ;display "B"
+0042 0E               45                             DB 00001110B            ;display "F"
+                      46                             END
+A51 MACRO ASSEMBLER  GPIO_INPUT_4X4                                                       09/16/2020 20:46:30 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DEBOUNCE . . . . .  C ADDR   002AH   A   
+DE_500_US. . . . .  C ADDR   002CH   A   
+KEYIN. . . . . . .  C ADDR   0022H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+SCAN . . . . . . .  C ADDR   0009H   A   
+START. . . . . . .  C ADDR   0003H   A   
+TABLE. . . . . . .  C ADDR   0033H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

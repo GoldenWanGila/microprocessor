@@ -1,0 +1,1 @@
+"..\exp10\exp10_advanced.c" OPTIMIZE (8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\exp10_advanced.lst) TABS (2) OBJECT(.\Objects\exp10_advanced.obj)

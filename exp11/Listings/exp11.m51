@@ -1,0 +1,209 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    12/08/2020  17:23:49  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\exp11_advanced.obj TO .\Objects\exp11 PRINT (.\Listings\exp
+>> 11.m51) RAMSIZE (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\exp11_advanced.obj (EXP11_ADVANCED)
+  D:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\exp11 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     000AH     UNIT         ?DT?EXP11_ADVANCED
+            DATA    0012H     0002H     UNIT         _DATA_GROUP_
+            IDATA   0014H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     0003H     ABSOLUTE     
+                    0006H     000DH                  *** GAP ***
+            CODE    0013H     0003H     ABSOLUTE     
+                    0016H     07EAH                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     003FH     UNIT         ?PR?INT_0?EXP11_ADVANCED
+            CODE    08CBH     003EH     UNIT         ?PR?TURN?EXP11_ADVANCED
+            CODE    0909H     003BH     UNIT         ?PR?INT_1?EXP11_ADVANCED
+            CODE    0944H     002CH     UNIT         ?PR?_DELAY?EXP11_ADVANCED
+            CODE    0970H     0018H     UNIT         ?PR?MAIN?EXP11_ADVANCED
+            CODE    0988H     0010H     UNIT         ?CO?EXP11_ADVANCED
+            CODE    0998H     000DH     UNIT         ?C_INITSEG
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\exp11 (?C_STARTUP)
+
+
+SEGMENT                             DATA_GROUP 
+  +--> CALLED SEGMENT             START    LENGTH
+-------------------------------------------------
+?C_C51STARTUP                     -----    -----
+  +--> ?PR?MAIN?EXP11_ADVANCED
+  +--> ?C_INITSEG
+
+?PR?MAIN?EXP11_ADVANCED           -----    -----
+  +--> ?PR?TURN?EXP11_ADVANCED
+
+?PR?TURN?EXP11_ADVANCED           0012H    0002H
+  +--> ?PR?_DELAY?EXP11_ADVANCED
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/08/2020  17:23:49  PAGE 2
+
+
+
+?PR?_DELAY?EXP11_ADVANCED         -----    -----
+  +--> ?CO?EXP11_ADVANCED
+
+*** NEW ROOT ***************************************************
+
+?PR?INT_0?EXP11_ADVANCED          -----    -----
+  +--> ?PR?_DELAY?EXP11_ADVANCED
+
+*** NEW ROOT ***************************************************
+
+?PR?INT_1?EXP11_ADVANCED          -----    -----
+  +--> ?PR?_DELAY?EXP11_ADVANCED
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\exp11 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0800H         SEGMENT       ?C_C51STARTUP
+  I:0014H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0803H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0800H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0800H         LINE#         133
+  C:0802H         LINE#         134
+  C:0803H         LINE#         135
+  C:0804H         LINE#         136
+  C:0806H         LINE#         185
+  C:0809H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        EXP11_ADVANCED
+  C:0000H         SYMBOL        _ICE_DUMMY_
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/08/2020  17:23:49  PAGE 3
+
+
+  D:0090H         PUBLIC        P1
+  D:00A8H         PUBLIC        IE
+  C:0958H         PUBLIC        _delay
+  D:0008H         PUBLIC        delay_time
+  C:0970H         PUBLIC        main
+  D:000AH         PUBLIC        delay_time_fast
+  C:0988H         PUBLIC        one_phase
+  D:000CH         PUBLIC        dir
+  C:08CBH         PUBLIC        turn
+  D:000EH         PUBLIC        delay_time_slow
+  B:0088H.0       PUBLIC        IT0
+  B:0088H.2       PUBLIC        IT1
+  C:098CH         PUBLIC        two_phase
+  C:088CH         PUBLIC        int_0
+  D:0010H         PUBLIC        debounce_time
+  C:0909H         PUBLIC        int_1
+  C:0990H         PUBLIC        one_a_half_phase
+  -------         PROC          MAIN
+  C:0970H         LINE#         13
+  C:0970H         LINE#         14
+  C:0972H         LINE#         15
+  C:0974H         LINE#         16
+  C:0977H         LINE#         17
+  C:097DH         LINE#         18
+  C:0983H         LINE#         19
+  C:0983H         LINE#         20
+  C:0986H         LINE#         21
+  -------         ENDPROC       MAIN
+  -------         PROC          TURN
+  -------         DO            
+  D:0012H         SYMBOL        x
+  -------         ENDDO         
+  C:08CBH         LINE#         24
+  C:08CBH         LINE#         26
+  C:08D3H         LINE#         27
+  C:08D7H         LINE#         28
+  C:08D7H         LINE#         29
+  C:08DAH         LINE#         30
+  C:08EEH         LINE#         31
+  C:08EEH         LINE#         32
+  C:08EEH         LINE#         33
+  C:08F4H         LINE#         34
+  C:08F4H         LINE#         35
+  C:08F7H         LINE#         36
+  C:0908H         LINE#         37
+  C:0908H         LINE#         38
+  -------         ENDPROC       TURN
+  -------         PROC          L?0027
+  -------         ENDPROC       L?0027
+  -------         PROC          _DELAY
+  D:0006H         SYMBOL        t
+  -------         DO            
+  D:0004H         SYMBOL        x
+  -------         ENDDO         
+  C:0958H         LINE#         40
+  C:0958H         LINE#         42
+  C:096FH         LINE#         43
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  12/08/2020  17:23:49  PAGE 4
+
+
+  -------         ENDPROC       _DELAY
+  -------         PROC          INT_0
+  C:088CH         LINE#         45
+  C:089DH         LINE#         46
+  C:08A7H         LINE#         47
+  C:08AFH         LINE#         49
+  C:08B5H         LINE#         50
+  C:08BCH         LINE#         51
+  -------         ENDPROC       INT_0
+  -------         PROC          INT_1
+  C:0909H         LINE#         53
+  C:091AH         LINE#         54
+  C:0922H         LINE#         55
+  C:0928H         LINE#         57
+  C:092EH         LINE#         58
+  C:0935H         LINE#         59
+  -------         ENDPROC       INT_1
+  -------         ENDMOD        EXP11_ADVANCED
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 012DH BYTE (14%) *
+******************************************************************************
+
+Program Size: data=21.0 xdata=0 code=430
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

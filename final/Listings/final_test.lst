@@ -1,0 +1,198 @@
+C51 COMPILER V9.60.0.0   FINAL_TEST                                                        12/22/2020 17:11:51 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE FINAL_TEST
+OBJECT MODULE PLACED IN .\Objects\final_test.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\final-test\final_test.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND P
+                    -RINT(.\Listings\final_test.lst) TABS(2) OBJECT(.\Objects\final_test.obj)
+
+line level    source
+
+   1          #include "regx51.h"
+   2          
+   3          code char row_pos[] = {0xF7, 0xFB, 0xFD, 0xFE};
+   4          code int key[] = {1,4,7,10,2,5,8,0,3,6,9,11,12,13,14,15};
+   5          code char LCD_pos_1st[] = {0x80,0x81,0x82,0x83,0x84,0x85,0x86,0x87,0x88,0x89,0x8A,0x8B,0x8C,0x8D,0x8E,0x8F
+             -};
+   6          code char LCD_pos_2nd[] = {0xC0,0xC1,0xC2,0xC3,0xC4,0xC5,0xC6,0xC7,0xC8,0xC9,0xCA,0xCB,0xCC,0xCD,0xCE,0xCF
+             -};
+   7          
+   8          int* temp;
+   9          int temp_index = 0;
+  10          int* ready;
+  11          int ready_index = 0;
+  12          int* result;
+  13          
+  14          
+  15          char* a;
+  16          int LCD_pos = 0;
+  17          int temp_num = 0;
+  18          int sum = 0;
+  19          int index = 0;
+  20          int LCD_pos_index = 0;
+  21          char DDRAM_address;
+  22          int op;
+  23          
+  24          void scan();
+  25          void print_number(int k);
+  26          void write(char cmd, char rs_value);
+  27          void get_result(int op);
+  28          void delay(unsigned int t);
+  29          
+  30          void main(){
+  31   1        //IT0 = 0;                              //開啟外部中斷信號種類，負緣觸發(TCON)
+  32   1        //EA = 1;                               //開啟全部中斷致能位元(IE)
+  33   1        //EX0 = 1;                              //致能外部中斷EX0(IE)
+  34   1        //P3_4 = 0;                             //P3.4(WR)=0，ADC開始轉換
+  35   1        //P3_4 = 1;                             //P3.4(WR)=1，停止持續轉換
+  36   1        write(0x38, 0);                       //功能設定8位元、2行、5x7字型
+  37   1        write(0x0F, 0);                       //顯示器設定開啟、有游標(會閃爍)
+  38   1        write(0x06, 0);                       //資料輸入LCD時，游標右移一格、顯示器不動
+  39   1        write(0x01, 0);                       //清除顯示器
+  40   1        write(0x80, 0);                       //DDRAM位址設定00H
+  41   1        while(1){
+  42   2          scan();
+  43   2        }
+  44   1      }
+  45          
+  46          /*void int_0(void) interrupt 0{
+  47            P3_5 = 0;                             //P3_5(RD)=0，開啟資料讀取接腳
+  48            P0 = 0xFF;                            //P0要當作輸入功能時要先輸出1才能判斷
+  49            //LCD顯示的東東(P0(順序倒的)判斷，P1輸出)
+  50            P3_5 = 1;                             //P3.5(RD)=1，停止讀取
+  51            P3_4 = 0;                             //P3.4(WR)=0，ADC開始轉換
+  52            P3_4 = 1;                             //P3.4(WR)=1，停止持續轉換
+C51 COMPILER V9.60.0.0   FINAL_TEST                                                        12/22/2020 17:11:51 PAGE 2   
+
+  53          }*/
+  54          
+  55          void scan(){
+  56   1        int i, k = -1;
+  57   1        while(1){
+  58   2          for(i=0; i<4; i++){
+  59   3            P2 = row_pos[i];                  //輸入掃描訊號
+  60   3            if(P2 != row_pos[i]){             //當鍵盤上有一個鍵被按下時，...
+  61   4              if(P2_7 == 0){                  //scan 1st column
+  62   5                k = key[i];
+  63   5              }
+  64   4              else if(P2_6 == 0){             //scan 2nd column
+  65   5                k = key[i+4];
+  66   5              }
+  67   4              else if(P2_5 == 0){             //scan 3rd column
+  68   5                k = key[i+8];
+  69   5              }
+  70   4              else if(P2_4 == 0){             //scan 4th column
+  71   5                k = key[i+12];
+  72   5              }
+  73   4              print_number(k);
+  74   4            }
+  75   3          }
+  76   2          if(k!=-1) break;
+  77   2        }
+  78   1      }
+  79          
+  80          void print_number(int k){
+  81   1        delay(50000);                             //Debounce
+  82   1        switch(k){
+  83   2          case 10:
+  84   2            op = k;
+  85   2            sum += temp_num;
+  86   2            temp_num = 0;
+  87   2            write('+', 1);
+  88   2            break;
+  89   2          case 11:
+  90   2            op = k;
+  91   2            sum += temp_num;
+  92   2            temp_num = 0;
+  93   2            write('-', 1);
+  94   2            break;
+  95   2          case 12:
+  96   2            op = k;
+  97   2            sum += temp_num;
+  98   2            temp_num = 0;
+  99   2            write('*', 1);
+ 100   2            break;
+ 101   2          case 13:
+ 102   2            op = k;
+ 103   2            sum += temp_num;
+ 104   2            temp_num = 0;
+ 105   2            write('/', 1);
+ 106   2            break;
+ 107   2          case 14:
+ 108   2            write('=', 1);
+ 109   2            get_result(op);
+ 110   2            break;
+ 111   2          case 15:
+ 112   2            write(0x01, 0);
+ 113   2            write(0x80, 0);
+ 114   2            temp_num = 0;
+C51 COMPILER V9.60.0.0   FINAL_TEST                                                        12/22/2020 17:11:51 PAGE 3   
+
+ 115   2            sum = 0;
+ 116   2            break;
+ 117   2            default:                              //輸入的是數字
+ 118   2              write(k+'0',1);
+ 119   2              if(temp_num == 0)
+ 120   2                temp_num += k;
+ 121   2              else
+ 122   2                temp_num *= 10;
+ 123   2                temp_num += k;
+ 124   2              break;
+ 125   2        }
+ 126   1      }
+ 127          
+ 128          void get_result(int op){
+ 129   1        int i = 0, index = 1;
+ 130   1        switch(op){
+ 131   2          case 10:
+ 132   2            sum += temp_num;
+ 133   2            break;
+ 134   2          case 11:
+ 135   2            sum -= temp_num;
+ 136   2            break;
+ 137   2          case 12:
+ 138   2            sum *= temp_num;
+ 139   2            break;
+ 140   2          case 13:
+ 141   2            sum /= temp_num;
+ 142   2            break;
+ 143   2        }
+ 144   1        i =sum;
+ 145   1        while(i >= 10){
+ 146   2          i/=10;
+ 147   2          index++;
+ 148   2        }
+ 149   1        for(i=index;i>0;i--){
+ 150   2          write(sum/(10^(index-1))+'0',1);
+ 151   2          sum /= 10;
+ 152   2        }
+ 153   1      }
+ 154          
+ 155          void write(char cmd, char rs_value){
+ 156   1        P1 = cmd;                             //設定cmd
+ 157   1        P3_0 = rs_value;                      //設定RS(0或1)
+ 158   1        P3_1 = 1;                             //Enable high
+ 159   1        delay(1000);
+ 160   1        P3_1 = 0;                             //Enable low
+ 161   1        delay(1000);
+ 162   1      }
+ 163          
+ 164          void delay(unsigned int t){
+ 165   1        while(t--);
+ 166   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    710    ----
+   CONSTANT SIZE    =     68    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     29      10
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.60.0.0   FINAL_TEST                                                        12/22/2020 17:11:51 PAGE 4   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

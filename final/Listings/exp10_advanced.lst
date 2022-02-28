@@ -1,0 +1,97 @@
+C51 COMPILER V9.60.0.0   EXP10_ADVANCED                                                    12/22/2020 17:58:46 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EXP10_ADVANCED
+OBJECT MODULE PLACED IN .\Objects\exp10_advanced.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE ..\exp10\exp10_advanced.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PR
+                    -INT(.\Listings\exp10_advanced.lst) TABS(2) OBJECT(.\Objects\exp10_advanced.obj)
+
+line level    source
+
+   1          #include "regx51.h"
+   2          
+   3          void print_msg(char* msg);
+   4          void write(char cmd, char rs_value);
+   5          void delay(unsigned int i);
+   6          
+   7          void main(){
+   8   1        write(0x38, 0);
+   9   1        write(0x0F, 0);
+  10   1        write(0x06, 0);
+  11   1        write(0x01, 0);
+  12   1      
+  13   1        write(0x40, 0);                   //01000000B
+  14   1        write(0x00, 1);                   //000 00000B
+  15   1        write(0x41, 0);                   //01000001B
+  16   1        write(0x0A, 1);                   //000 01010B
+  17   1        write(0x42, 0);                   //01000010B
+  18   1        write(0x1F, 1);                   //000 11111B
+  19   1        write(0x43, 0);                   //01000011B
+  20   1        write(0x1F, 1);                   //000 11111B
+  21   1        write(0x44, 0);                   //01000100B
+  22   1        write(0x0E, 1);                   //000 01110B
+  23   1        write(0x45, 0);                   //01000101B
+  24   1        write(0x04, 1);                   //000 00100B
+  25   1        write(0x46, 0);                   //01000110B
+  26   1        write(0x00, 1);                   //000 00000B
+  27   1        write(0x47, 0);                   //01000111B
+  28   1        write(0x00, 1);                   //000 00000B
+  29   1        
+  30   1        write(0x48, 0);                   //01000000B
+  31   1        write(0x00, 1);                   //000 00000B
+  32   1        write(0x49, 0);                   //01000001B
+  33   1        write(0x1F, 1);                   //000 11111B
+  34   1        write(0x4A, 0);                   //01000010B
+  35   1        write(0x15, 1);                   //000 10101B
+  36   1        write(0x4B, 0);                   //01000011B
+  37   1        write(0x1F, 1);                   //000 11111B
+  38   1        write(0x4C, 0);                   //01000100B
+  39   1        write(0x1F, 1);                   //000 11111B
+  40   1        write(0x4D, 0);                   //01000101B
+  41   1        write(0x0A, 1);                   //000 01010B
+  42   1        write(0x4E, 0);                   //01000110B
+  43   1        write(0x1B, 1);                   //000 11011B
+  44   1        write(0x4F, 0);                   //01000111B
+  45   1        write(0x00, 1);                   //000 00000B
+  46   1        
+  47   1        write(0x80, 0);
+  48   1        write(0x00, 1);
+  49   1        
+  50   1        write(0xC0, 0);
+  51   1        write(0x01, 1);
+  52   1        while(1);
+  53   1      }
+  54          
+C51 COMPILER V9.60.0.0   EXP10_ADVANCED                                                    12/22/2020 17:58:46 PAGE 2   
+
+  55          /*void print_msg(char*msg){
+  56            for(; *msg != '\0'; ++msg)
+  57              write(*msg, 1);
+  58          }*/
+  59          
+  60          void write(char cmd, char rs_value){
+  61   1        P1 = cmd;
+  62   1        P3_0 = rs_value;
+  63   1        P3_1 = 1;
+  64   1        delay(100);
+  65   1        P3_1 = 0;
+  66   1        delay(100);
+  67   1      }
+  68          
+  69          void delay(unsigned int i){
+  70   1        while(i--);
+  71   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    298    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

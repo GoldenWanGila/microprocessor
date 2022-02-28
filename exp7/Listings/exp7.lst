@@ -1,0 +1,59 @@
+C51 COMPILER V9.60.0.0   EXP7                                                              11/03/2020 16:23:37 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EXP7
+OBJECT MODULE PLACED IN .\Objects\exp7.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE exp7.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\exp7
+                    -.lst) TABS(2) OBJECT(.\Objects\exp7.obj)
+
+line level    source
+
+   1          #include <regx51.h>
+   2          
+   3          #define TH0_init 0x06                           //TH0 = 255 ~ 249
+   4          #define TL0_init 0x06                           //TL0 = 255 ~ 249
+   5          #define Timer0_int_exe_time 1050                //the machine cycles when timer0 Interrupt
+   6          
+   7          void delay(int t);
+   8          int counter;
+   9          
+  10          void main(){
+  11   1        TMOD = 0x02;                                  //set timer0 to mode2, 8-bits and Auto-reload
+  12   1        IP = 0x02;                                    //set timer0 Interrupt to higher priority
+  13   1        IE = 0x82;                                    //enable timer0 Interrupt
+  14   1        P1 = 0xff;
+  15   1        TL0 = TL0_init;TH0 = TH0_init;                //set TH0, TL0
+  16   1        TCON = 0x10;                                  //enable timer0 --> open timer0
+  17   1        
+  18   1        while(1){
+  19   2          delay(20000);                                 //the maximum number of t is 32767(2^15-1)
+  20   2          P1_0 = ~P1_0;
+  21   2        }
+  22   1      }
+  23          
+  24          void timer0_interrupt(void) interrupt 1 {
+  25   1        counter++;
+  26   1        if(counter == Timer0_int_exe_time){
+  27   2          P1_1 = ~P1_1;
+  28   2          counter = 0;
+  29   2        }
+  30   1      }
+  31          
+  32          void delay(int t){
+  33   1        for(;t>0;t--);
+  34   1          for(;t>0;t--);
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    102    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

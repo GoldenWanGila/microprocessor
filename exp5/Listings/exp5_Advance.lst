@@ -1,0 +1,58 @@
+A51 MACRO ASSEMBLER  EXP5_ADVANCE                                                         10/13/2020 19:01:11 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\exp5_Advance.obj
+ASSEMBLER INVOKED BY: D:\Keil_v5\C51\BIN\A51.EXE exp5_Advance.A51 SET(SMALL) DEBUG PRINT(.\Listings\exp5_Advance.lst) OB
+                      JECT(.\Objects\exp5_Advance.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                             ORG     0000h
+0000 74FC              2                             MOV     A, #11111100B
+0002 758140            3                             MOV             SP, #40H
+0005 8039              4                             JMP     LOOP
+0040                   5                             ORG             0040h
+0040 F5A0              6     LOOP:           MOV             P2, A
+0042 D290              7                             SETB    P1.0
+0044 D291              8                             SETB    P1.1
+0046 309008            9                             JNB             P1.0, PUSH_BLOCK
+0049 309114           10                             JNB             P1.1, POP_BLOCK
+004C 1157             11     CONTINUE:       CALL    DEBOUNCE
+004E 23               12                             RL              A
+004F 80EF             13                             JMP             LOOP
+0051 C0A0             14     PUSH_BLOCK:     PUSH    P2
+0053 1157             15                             CALL    DEBOUNCE
+0055 80F5             16                             JMP     CONTINUE
+0057 7AFA             17     DEBOUNCE:       MOV     R2, #250
+0059 79FA             18     DE_250_us:      MOV     R1, #250
+005B D9FE             19                             DJNZ    R1, $
+005D DAFA             20                             DJNZ    R2, DE_250_us
+005F 22               21                             RET
+0060 D0A0             22     POP_BLOCK:      POP             P2
+0062 1157             23                             CALL    DEBOUNCE
+0064 80FA             24                             JMP             POP_BLOCK
+                      25                             END
+A51 MACRO ASSEMBLER  EXP5_ADVANCE                                                         10/13/2020 19:01:11 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CONTINUE . . . . .  C ADDR   004CH   A   
+DEBOUNCE . . . . .  C ADDR   0057H   A   
+DE_250_US. . . . .  C ADDR   0059H   A   
+LOOP . . . . . . .  C ADDR   0040H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+POP_BLOCK. . . . .  C ADDR   0060H   A   
+PUSH_BLOCK . . . .  C ADDR   0051H   A   
+SP . . . . . . . .  D ADDR   0081H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

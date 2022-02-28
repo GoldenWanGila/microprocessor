@@ -1,0 +1,110 @@
+C51 COMPILER V9.60.0.0   EXP8_ADVANCED                                                     11/10/2020 23:03:21 PAGE 1   
+
+
+C51 COMPILER V9.60.0.0, COMPILATION OF MODULE EXP8_ADVANCED
+OBJECT MODULE PLACED IN .\Objects\exp8_advanced.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE exp8_advanced.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ings\exp8_advanced.lst) TABS(2) OBJECT(.\Objects\exp8_advanced.obj)
+
+line level    source
+
+   1          #include "regx51.h"
+   2          
+   3          void init_uart();
+   4          char recivevalue;
+   5          char id_stack[9];
+   6          char ans[9] = {'E','9','4','0','7','6','1','0','2'};
+   7          char c[9] = {' ','c','o','r','r','e','c','t','\n'};
+   8          char w[6] = {'w','r','o','n','g','\n'};
+   9          int i;
+  10          int flag = 1;
+  11          int len_c = 9;
+  12          int len_w = 6;
+  13          int index = 0;
+  14          int check = 0;
+  15          
+  16          void main(void){
+  17   1        init_uart();
+  18   1        while(1){
+  19   2          if(recivevalue == 0x0D){
+  20   3            recivevalue = '0';
+  21   3            for(index; index > 0; index--){
+  22   4              if(id_stack[index - 1] == ans[index - 1]){
+  23   5                check++;
+  24   5              }
+  25   4            }
+  26   3            if(check == 9){
+  27   4              check = 0;
+  28   4              flag = 1;
+  29   4              SBUF = 0x0A;
+  30   4              while(flag == 1);
+  31   4              flag = 1;
+  32   4              SBUF = 0x0D;
+  33   4              while(flag == 1);
+  34   4              for(i = 1; i <= len_c; i++){
+  35   5                flag = 1;
+  36   5                SBUF = c[i-1];
+  37   5                while(flag == 1);
+  38   5              }
+  39   4              flag = 1;
+  40   4              SBUF = 0x0D;
+  41   4              while(flag == 1);
+  42   4            }
+  43   3            else{
+  44   4              check = 0;
+  45   4              flag = 1;
+  46   4              SBUF = 0x0A;
+  47   4              while(flag == 1);
+  48   4              flag = 1;
+  49   4              SBUF = 0x0D;
+  50   4              while(flag == 1);
+  51   4              for(i = 1; i <= len_w; i++){
+  52   5                flag = 1;
+  53   5                SBUF = w[i-1];
+  54   5                while(flag == 1);
+C51 COMPILER V9.60.0.0   EXP8_ADVANCED                                                     11/10/2020 23:03:21 PAGE 2   
+
+  55   5              }
+  56   4              flag = 1;
+  57   4              SBUF = 0x0D;
+  58   4              while(flag == 1);
+  59   4            }
+  60   3          }
+  61   2        }
+  62   1      }
+  63          
+  64          void init_uart(void){
+  65   1        SCON = 0x50;
+  66   1        TMOD = 0x20;
+  67   1        TH1 = 0xE6;
+  68   1        TR1 = 1;
+  69   1        IE = 0x90;
+  70   1      }
+  71          
+  72          void UART_ISR(void) interrupt 4{
+  73   1        if(RI == 1){
+  74   2          RI = 0;
+  75   2          recivevalue = SBUF;
+  76   2          P1 = recivevalue;
+  77   2          id_stack[index] = recivevalue;
+  78   2          index++;
+  79   2        }
+  80   1        if(TI == 1){
+  81   2          flag = 0;
+  82   2          TI = 0;
+  83   2        }
+  84   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    371    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     46    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

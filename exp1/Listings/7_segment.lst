@@ -1,0 +1,57 @@
+A51 MACRO ASSEMBLER  7_SEGMENT                                                            10/22/2020 16:47:32 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\7_segment.obj
+ASSEMBLER INVOKED BY: D:\Keil_v5\C51\BIN\A51.EXE 7_segment.A51 SET(SMALL) DEBUG PRINT(.\Listings\7_segment.lst) OBJECT(.
+                      \Objects\7_segment.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1                     ORG 0                                   ;start address is 0
+0000 900022            2                     MOV DPTR, #TABLE                ;DPTR point to TABLE
+0003 7804              3     START:  MOV R0, #4                              ;4 LED
+0005 7900              4                     MOV R1, #0                              ;table index
+0007 7A7F              5                     MOV R2, #01111111B              ;LED drive pin
+0009 8AB0              6     LOOP:   MOV P3, R2                              ;select LED
+000B E9                7                     MOV A, R1                               ;move R1 to A
+000C 93                8                     MOVC A, @A+DPTR                 ;get value from table
+000D F590              9                     MOV P1, A                               ;move value to P1
+000F 1119             10                     CALL DELAY                              ;delay 0.5ms
+0011 09               11                     INC R1                                  ;increase R1
+0012 EA               12                     MOV A, R2                               ;move R2 to A
+0013 03               13                     RR A                                    ;rotate A
+0014 FA               14                     MOV R2, A                               ;move A back to R2
+0015 D8F2             15                     DJNZ R0, LOOP                   ;decrement R0 until 0
+0017 80EA             16                     SJMP START                              ;jump to start
+0019 7CFA             17     DELAY:  MOV R4, #250
+001B 7BFA             18     D1:             MOV R3, #250                    ;loop 250 times
+001D DBFE             19                     DJNZ R3, $                              ;decrement R3 until 0
+001F DCFA             20                     DJNZ R4, D1
+0021 22               21                     RET                                             ;return from subrotine
+0022 83               22     TABLE:  DB 083H                                 ;6
+0023 F9               23                     DB 0F9H                                 ;1
+0024 C0               24                     DB 0C0H                                 ;0
+0025 A4               25                     DB 0A4H                                 ;2
+                      26                     END                                             ;end of program
+A51 MACRO ASSEMBLER  7_SEGMENT                                                            10/22/2020 16:47:32 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+D1 . . . . . . . .  C ADDR   001BH   A   
+DELAY. . . . . . .  C ADDR   0019H   A   
+LOOP . . . . . . .  C ADDR   0009H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+START. . . . . . .  C ADDR   0003H   A   
+TABLE. . . . . . .  C ADDR   0022H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

@@ -1,0 +1,73 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    11/03/2020  17:58:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+D:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\exp7_advanced.obj TO .\Objects\exp7 PRINT (.\Listings\exp7.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\exp7_advanced.obj (EXP7_ADVANCED)
+
+
+LINK MAP OF MODULE:  .\Objects\exp7 (EXP7_ADVANCED)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     002AH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\exp7 (EXP7_ADVANCED)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EXP7_ADVANCED
+  D:00E0H         SYMBOL        ACC
+  C:0018H         SYMBOL        D1
+  C:001AH         SYMBOL        D2
+  D:00A8H         SYMBOL        IE
+  C:0010H         SYMBOL        INT0_ISR
+  C:000CH         SYMBOL        LOOP
+  C:0005H         SYMBOL        MAIN
+  D:0090H         SYMBOL        P1
+  D:00D0H         SYMBOL        PSW
+  C:0000H         LINE#         2
+  C:0003H         LINE#         4
+  C:0005H         LINE#         5
+  C:0007H         LINE#         6
+  C:000AH         LINE#         7
+  C:000CH         LINE#         8
+  C:000EH         LINE#         9
+  C:0010H         LINE#         10
+  C:0012H         LINE#         11
+  C:0014H         LINE#         12
+  C:0016H         LINE#         13
+  C:0018H         LINE#         14
+  C:001AH         LINE#         15
+  C:001CH         LINE#         16
+  C:001EH         LINE#         17
+  C:0020H         LINE#         18
+  C:0022H         LINE#         19
+  C:0023H         LINE#         20
+  C:0024H         LINE#         21
+  C:0025H         LINE#         22
+  C:0027H         LINE#         23
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  11/03/2020  17:58:41  PAGE 2
+
+
+  C:0029H         LINE#         24
+  -------         ENDMOD        EXP7_ADVANCED
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0029H BYTE ( 2%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=42
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
